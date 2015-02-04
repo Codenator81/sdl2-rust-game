@@ -3,3 +3,5 @@
 
 SDL2.dll added for Windows support
 All code I run on Windows 8.1
+
+This is travel throu book SDL%20Game%20Development.
