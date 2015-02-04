@@ -3,14 +3,12 @@ use sdl2::video::{Window, WindowPos, SHOWN};
 use sdl2::pixels::Color;
 use sdl2::render::{RenderDriverIndex, ACCELERATED, Renderer};
 
-pub struct WindowG {
-	window: Window
-}
-pub struct Render {
+pub struct Graph {
 renderer: Renderer
 }
 
 fn main() {
+	sdl2::init(sdl2::INIT_VIDEO);
 	let mut g_running: bool = true;
 	let graph = init("Try SDL");
 	let mut count = 0;
@@ -23,27 +21,25 @@ fn main() {
 	sdl2::quit();
 }
 
-fn init(title: &'static str) -> Render {
-		sdl2::init(sdl2::INIT_EVERYTHING);
-		// загружаем окно и ловим ошибки
-		let window_g: WindowG;
+fn init(title: &'static str) -> Graph {
+				
 		let render: Render;
-		match Window::new(title,
+		let window = match Window::new(title,
 			WindowPos::PosCentered,
 			WindowPos::PosCentered,
 			640,
 			480,
 			SHOWN) {
-				Ok(window) => window_g = WindowG {window: window },
+				Ok(window) => window,
 				Err(err) => panic!("failed to create window: {}", err)
 			};
-		match Renderer::from_window(window_g.window, RenderDriverIndex::Auto, ACCELERATED) {
-				Ok(renderer) => render = Render{renderer:renderer},
+		match Renderer::from_window(window, RenderDriverIndex::Auto, ACCELERATED) {
+				Ok(renderer) => render = Graph{renderer:renderer},
 				Err(err) => panic!("failed to create renderer: {}", err)
 		};
 		render
 }
-fn render(graph: &Render ) {
+fn render(graph: &Graph ) {
 	let mut drawer = graph.renderer.drawer();
 	// Заполняем чёрным светом эта функция принимает значения
 	// RGBA альфа в порядке Red, Green, Blue и Alpha
