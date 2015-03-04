@@ -5,3 +5,5 @@ SDL2.dll added for Windows support
 All code I run on Windows 8.1
 
 This is travel through book SDL Game Development.
+
+PAUSED because move to MAC machine
