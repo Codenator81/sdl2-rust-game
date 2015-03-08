@@ -4,7 +4,7 @@ use sdl2::pixels::Color;
 use sdl2::render::{RenderDriverIndex, ACCELERATED, Renderer};
 
 pub struct Graph {
-renderer: Renderer
+	renderer: Renderer
 }
 
 fn main() {
@@ -41,8 +41,6 @@ fn init(title: &'static str) -> Graph {
 }
 fn render(graph: &Graph ) {
 	let mut drawer = graph.renderer.drawer();
-	// Заполняем чёрным светом эта функция принимает значения
-	// RGBA альфа в порядке Red, Green, Blue и Alpha
 	drawer.set_draw_color(Color::RGBA( 0, 0, 0, 255));
 	drawer.clear();
 	drawer.present();
