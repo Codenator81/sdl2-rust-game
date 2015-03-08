@@ -12,18 +12,17 @@ fn main() {
 	let mut g_running: bool = true;
 	let graph = init("Try SDL");
 	let mut count = 0;
-	while count < 10000
+	while count < 1000
 	//while(g_running) 
 	{
 		render(&graph);
 		count += 1; // for stop while loop
-	}	
-	sdl2::quit();
+	}
 }
 
 fn init(title: &'static str) -> Graph {
 				
-		let render: Render;
+		let render: Graph;
 		let window = match Window::new(title,
 			WindowPos::PosCentered,
 			WindowPos::PosCentered,
@@ -39,6 +38,7 @@ fn init(title: &'static str) -> Graph {
 		};
 		render
 }
+
 fn render(graph: &Graph ) {
 	let mut drawer = graph.renderer.drawer();
 	drawer.set_draw_color(Color::RGBA( 0, 0, 0, 255));
