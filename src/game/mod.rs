@@ -4,6 +4,8 @@ use sdl2::pixels::Color;
 use sdl2::render::{RenderDriverIndex, ACCELERATED, Renderer};
 use sdl2::sdl::Sdl;
 use sdl2::keycode::KeyCode;
+use sdl2::event::EventPump;
+
 
 pub struct Game{
 	pub screen: Renderer,
@@ -40,26 +42,39 @@ impl Game {
 
 		while(self.g_running)
 		{
-			for event in event_pump.poll_iter() {
-				use sdl2::event::Event;
-
-				match event {
-						Event::Quit {..} | Event::KeyDown { keycode: KeyCode::Escape, .. } => {
-						self.g_running = false
-					},
-						_ => {}
-					}
-			}
-
 			//read keyboard event
-			//g_Game.handleEvents();
+			self.handleEvents(event_pump);
+//			for event in event_pump.poll_iter() {
+//				use sdl2::event::Event;
+//
+//				match event {
+//						Event::Quit {..} | Event::KeyDown { keycode: KeyCode::Escape, .. } => {
+//						self.g_running = false
+//					},
+//						_ => {}
+//					}
+//			}
+
 			//update();
 			self.render();
-			count += 1; // for stop while loop
 		}
 	}
 
-	pub fn render(&self) {
+	fn handleEvents(&mut self, mut event_pump: EventPump) -> Game {
+		for event in event_pump.poll_iter()  {
+			use sdl2::event::Event;
+
+			self.g_running = match event {
+					Event::Quit {..} | Event::KeyDown { keycode: KeyCode::Escape, .. } => {
+					false
+				},
+					_ => {true}
+				}
+		}
+		self
+	}
+
+	fn render(&self) {
 		let mut drawer = self.screen.drawer();
 		drawer.set_draw_color(Color::RGBA( 0, 0, 0, 255));
 		drawer.clear();

@@ -3,8 +3,11 @@
 
 This is travel through book SDL Game Development.
 
+Project started on Windows 8.1
 Curently develop on MAC
 
+<br>
+<hr>
 Contributor:
 Aleksandr Poltarjonok aka Codenator81
 
