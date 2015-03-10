@@ -39,11 +39,11 @@ impl Game {
 	pub fn start(&mut self) {
 		println!("initalizing sdl2 ...");
 		let mut event_pump = self.sdl_cntx.event_pump();
-
-		while(self.g_running)
+		let mut running = true;
+		while(running)
 		{
 			//read keyboard event
-			self.handleEvents(event_pump);
+			running = self.handleEvents(event_pump);
 //			for event in event_pump.poll_iter() {
 //				use sdl2::event::Event;
 //
@@ -60,18 +60,18 @@ impl Game {
 		}
 	}
 
-	fn handleEvents(&mut self, mut event_pump: EventPump) -> Game {
+	fn handleEvents(&self, event_pump: EventPump) -> bool {
 		for event in event_pump.poll_iter()  {
 			use sdl2::event::Event;
 
-			self.g_running = match event {
+			 match event {
 					Event::Quit {..} | Event::KeyDown { keycode: KeyCode::Escape, .. } => {
 					false
 				},
 					_ => {true}
-				}
+				};
 		}
-		self
+		true
 	}
 
 	fn render(&self) {
