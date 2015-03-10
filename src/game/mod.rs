@@ -3,6 +3,7 @@ use sdl2::video::{Window, WindowPos, OPENGL};
 use sdl2::pixels::Color;
 use sdl2::render::{RenderDriverIndex, ACCELERATED, Renderer};
 use sdl2::sdl::Sdl;
+use sdl2::keycode::KeyCode;
 
 pub struct Game{
 	pub screen: Renderer,
@@ -35,10 +36,21 @@ impl Game {
 
 	pub fn start(&mut self) {
 		println!("initalizing sdl2 ...");
-		let mut count = 0;
-		while count < 1000
-		//while(g_Game.g_running)
+		let mut event_pump = self.sdl_cntx.event_pump();
+
+		while(self.g_running)
 		{
+			for event in event_pump.poll_iter() {
+				use sdl2::event::Event;
+
+				match event {
+						Event::Quit {..} | Event::KeyDown { keycode: KeyCode::Escape, .. } => {
+						self.g_running = false
+					},
+						_ => {}
+					}
+			}
+
 			//read keyboard event
 			//g_Game.handleEvents();
 			//update();
