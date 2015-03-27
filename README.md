@@ -4,7 +4,7 @@
 This is travel through book SDL Game Development.
 
 Project started on Windows 8.1
-Curently develop on MAC
+Curently develop on MAC/Mint
 
 <br>
 <hr>

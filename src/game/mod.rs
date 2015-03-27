@@ -12,7 +12,7 @@ pub struct Game{
 	pub sdl_cntx: Sdl
 }
 
-impl Game {git
+impl Game {
 
 	pub fn init(title: &'static str, width: i32, height: i32) -> Game {
 		let mut render: Game;

@@ -7,5 +7,6 @@ use game::Game;
 pub mod game;
 
 fn main() {
-	Game::start();
+	let mut g_game = Game::init("Chapter 1", 640, 480);
+	g_game.start();
 }
