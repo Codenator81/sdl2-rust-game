@@ -4,7 +4,6 @@ use sdl2::pixels::Color;
 use sdl2::render::{RenderDriverIndex, ACCELERATED, Renderer};
 use sdl2::sdl::Sdl;
 use sdl2::keycode::KeyCode;
-use sdl2::event::EventPump;
 
 
 pub struct Game{
@@ -13,7 +12,7 @@ pub struct Game{
 	pub sdl_cntx: Sdl
 }
 
-impl Game {
+impl Game {git
 
 	pub fn init(title: &'static str, width: i32, height: i32) -> Game {
 		let mut render: Game;
@@ -39,40 +38,25 @@ impl Game {
 	pub fn start(&mut self) {
 		println!("initalizing sdl2 ...");
 		let mut event_pump = self.sdl_cntx.event_pump();
-		let mut running = true;
-		while(running)
+		while self.g_running
 		{
 			//read keyboard event
-			running = self.handleEvents(event_pump);
-//			for event in event_pump.poll_iter() {
-//				use sdl2::event::Event;
-//
-//				match event {
-//						Event::Quit {..} | Event::KeyDown { keycode: KeyCode::Escape, .. } => {
-//						self.g_running = false
-//					},
-//						_ => {}
-//					}
-//			}
+			for event in event_pump.poll_iter() {
+				use sdl2::event::Event;
+
+				match event {
+						Event::Quit {..} | Event::KeyDown { keycode: KeyCode::Escape, .. } => {
+						self.g_running = false
+					},
+						_ => {}
+					}
+			}
 
 			//update();
 			self.render();
 		}
 	}
 
-	fn handleEvents(&self, event_pump: EventPump) -> bool {
-		for event in event_pump.poll_iter()  {
-			use sdl2::event::Event;
-
-			 match event {
-					Event::Quit {..} | Event::KeyDown { keycode: KeyCode::Escape, .. } => {
-					false
-				},
-					_ => {true}
-				};
-		}
-		true
-	}
 
 	fn render(&self) {
 		let mut drawer = self.screen.drawer();
