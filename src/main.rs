@@ -1,12 +1,10 @@
 extern crate sdl2;
 
-use sdl2::pixels::Color;
+pub mod game;
 
 use game::Game;
 
-pub mod game;
-
 fn main() {
-	let mut g_game = Game::init("Chapter 1", 640, 480);
+	let mut g_game = Game::init("Chapter 1", 640, 580);
 	g_game.start();
 }

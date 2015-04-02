@@ -4,7 +4,6 @@ use sdl2::pixels::Color;
 use sdl2::render::{RenderDriverIndex, ACCELERATED, Renderer};
 use sdl2::sdl::Sdl;
 use sdl2::keycode::KeyCode;
-use sdl2::event::EventPump;
 
 pub struct Game{
 	screen: Renderer,
@@ -31,7 +30,6 @@ impl Game {
 				Ok(renderer) => render = Game{screen: renderer, sdl_cntx: sdl_init, running: true},
 				Err(err) => panic!("failed to create renderer: {}", err)
 			};
-		// start the main loop
 		render
 	}
 
@@ -41,7 +39,7 @@ impl Game {
 		{
 			//read keyboard event
 			//handleEvent return true or false and stop loop
-			self.handleEvents();
+			self.handle_events();
 			//self.update();
 			self.render();
 		}
@@ -55,7 +53,7 @@ impl Game {
 		drawer.present();
 	}
 	//for now handle close button or Esc key
-	fn handleEvents(&mut self){
+	fn handle_events(&mut self){
 		let mut	event_pump = self.sdl_cntx.event_pump();
 		for event in event_pump.poll_iter()  {
 			use sdl2::event::Event;
