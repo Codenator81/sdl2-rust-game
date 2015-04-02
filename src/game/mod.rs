@@ -4,11 +4,13 @@ use sdl2::pixels::Color;
 use sdl2::render::{RenderDriverIndex, ACCELERATED, Renderer};
 use sdl2::sdl::Sdl;
 use sdl2::keycode::KeyCode;
+use sdl2::event::EventPump;
+
+use std::rc::Rc;
 
 
 pub struct Game{
 	pub screen: Renderer,
-	pub g_running: bool,
 	pub sdl_cntx: Sdl
 }
 
@@ -28,7 +30,7 @@ impl Game {
 				Err(err) => panic!("failed to create window: {}", err)
 			};
 		match Renderer::from_window(window, RenderDriverIndex::Auto, ACCELERATED) {
-				Ok(renderer) => render = Game{screen: renderer, g_running: true, sdl_cntx: sdl_init},
+				Ok(renderer) => render = Game{screen: renderer, sdl_cntx: sdl_init},
 				Err(err) => panic!("failed to create renderer: {}", err)
 			};
 		// start the main loop
@@ -38,20 +40,12 @@ impl Game {
 	pub fn start(&mut self) {
 		println!("initalizing sdl2 ...");
 		let mut event_pump = self.sdl_cntx.event_pump();
-		while self.g_running
+		let mut running = true;
+		while running
 		{
 			//read keyboard event
-			for event in event_pump.poll_iter() {
-				use sdl2::event::Event;
-
-				match event {
-						Event::Quit {..} | Event::KeyDown { keycode: KeyCode::Escape, .. } => {
-						self.g_running = false
-					},
-						_ => {}
-					}
-			}
-
+			//handleEvent return true or false and stop loop
+			running = Game::handleEvents(&mut event_pump);
 			//update();
 			self.render();
 		}
@@ -63,5 +57,20 @@ impl Game {
 		drawer.set_draw_color(Color::RGBA( 0, 0, 0, 255));
 		drawer.clear();
 		drawer.present();
+	}
+
+	fn handleEvents(event_pump: &mut EventPump)-> bool {
+		for event in event_pump.poll_iter()  {
+			use sdl2::event::Event;
+
+			match event {
+					Event::Quit {..} | Event::KeyDown { keycode: KeyCode::Escape, .. } => {
+					println!("false");
+					return false
+				},
+					_ => {true}
+				};
+		}
+		true
 	}
 }
