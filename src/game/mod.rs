@@ -6,9 +6,6 @@ use sdl2::sdl::Sdl;
 use sdl2::keycode::KeyCode;
 use sdl2::event::EventPump;
 
-use std::rc::Rc;
-
-
 pub struct Game{
 	pub screen: Renderer,
 	pub sdl_cntx: Sdl
@@ -39,13 +36,12 @@ impl Game {
 
 	pub fn start(&mut self) {
 		println!("initalizing sdl2 ...");
-		let mut event_pump = self.sdl_cntx.event_pump();
 		let mut running = true;
 		while running
 		{
 			//read keyboard event
 			//handleEvent return true or false and stop loop
-			running = Game::handleEvents(&mut event_pump);
+			running = Game::handleEvents(&mut self.sdl_cntx.event_pump());
 			//update();
 			self.render();
 		}
