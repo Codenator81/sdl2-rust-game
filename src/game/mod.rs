@@ -7,8 +7,9 @@ use sdl2::keycode::KeyCode;
 use sdl2::event::EventPump;
 
 pub struct Game{
-	pub screen: Renderer,
-	pub sdl_cntx: Sdl
+	screen: Renderer,
+	sdl_cntx: Sdl,
+	running: bool
 }
 
 impl Game {
@@ -27,7 +28,7 @@ impl Game {
 				Err(err) => panic!("failed to create window: {}", err)
 			};
 		match Renderer::from_window(window, RenderDriverIndex::Auto, ACCELERATED) {
-				Ok(renderer) => render = Game{screen: renderer, sdl_cntx: sdl_init},
+				Ok(renderer) => render = Game{screen: renderer, sdl_cntx: sdl_init, running: true},
 				Err(err) => panic!("failed to create renderer: {}", err)
 			};
 		// start the main loop
@@ -36,12 +37,11 @@ impl Game {
 
 	pub fn start(&mut self) {
 		println!("initalizing sdl2 ...");
-		let mut running = true;
-		while running
+		while self.running
 		{
 			//read keyboard event
 			//handleEvent return true or false and stop loop
-			running = Game::handleEvents(&mut self.sdl_cntx.event_pump());
+			self.handleEvents();
 			//update();
 			self.render();
 		}
@@ -54,19 +54,20 @@ impl Game {
 		drawer.clear();
 		drawer.present();
 	}
-
-	fn handleEvents(event_pump: &mut EventPump)-> bool {
+	//for now handle close button or Esc key
+	fn handleEvents(&mut self){
+		let mut	event_pump = self.sdl_cntx.event_pump();
 		for event in event_pump.poll_iter()  {
 			use sdl2::event::Event;
 
 			match event {
 					Event::Quit {..} | Event::KeyDown { keycode: KeyCode::Escape, .. } => {
-					println!("false");
-					return false
+					println!("Exit game", );
+					self.running = false
 				},
-					_ => {true}
+					_ => {self.running = true}
 				};
 		}
-		true
+		self.running = true
 	}
 }
