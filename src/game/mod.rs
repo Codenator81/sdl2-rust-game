@@ -42,7 +42,7 @@ impl Game {
 			//read keyboard event
 			//handleEvent return true or false and stop loop
 			self.handleEvents();
-			//update();
+			//self.update();
 			self.render();
 		}
 	}
@@ -61,13 +61,12 @@ impl Game {
 			use sdl2::event::Event;
 
 			match event {
-					Event::Quit {..} | Event::KeyDown { keycode: KeyCode::Escape, .. } => {
+				Event::Quit {..} | Event::KeyDown { keycode: KeyCode::Escape, .. } => {
 					println!("Exit game", );
 					self.running = false
 				},
-					_ => {self.running = true}
-				};
+				_ => {self.running = true}
+			};
 		}
-		self.running = true
 	}
 }
