@@ -14,23 +14,21 @@ pub struct Game{
 impl Game {
 
 	pub fn init(title: &'static str, width: i32, height: i32) -> Game {
-		let mut render: Game;
+		//let mut render: Game;
 		let sdl_init = sdl2::init(sdl2::INIT_VIDEO).unwrap();
-		let window = match Window::new(
+		let window = Window::new(
 			title,
 			WindowPos::PosCentered,
 			WindowPos::PosCentered,
 			width,
 			height,
-			OPENGL) {
-				Ok(window) => window,
-				Err(err) => panic!("failed to create window: {}", err)
-			};
-		match Renderer::from_window(window, RenderDriverIndex::Auto, ACCELERATED) {
-				Ok(renderer) => render = Game{screen: renderer, sdl_cntx: sdl_init, running: true},
-				Err(err) => panic!("failed to create renderer: {}", err)
-			};
-		render
+			OPENGL).unwrap();
+		let renderer = Renderer::from_window(window, RenderDriverIndex::Auto, ACCELERATED).unwrap();
+		Game{
+			screen: renderer,
+			sdl_cntx: sdl_init,
+			running: true
+		}
 	}
 
 	pub fn start(&mut self) {
