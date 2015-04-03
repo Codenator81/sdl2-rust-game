@@ -1,19 +1,26 @@
 use sdl2;
 use sdl2::video::{Window, WindowPos, OPENGL};
 use sdl2::pixels::Color;
-use sdl2::render::{RenderDriverIndex, ACCELERATED, Renderer};
+use sdl2::render::{RenderDriverIndex, ACCELERATED, Renderer, Texture};
 use sdl2::sdl::Sdl;
 use sdl2::keycode::KeyCode;
+use sdl2::rect::Rect;
+use sdl2::surface::Surface;
 
-pub struct Game{
+use std::path::Path;
+
+pub struct Game<'g> {
 	screen: Renderer,
 	sdl_cntx: Sdl,
-	running: bool
+	running: bool,
+	texture: Option<Texture<'g>>,
+	sourceRectangle: Option<Rect>,
+	destinationRectangle: Option<Rect>,
 }
 
-impl Game {
+impl <'gm>Game <'gm>{
 
-	pub fn init(title: &'static str, width: i32, height: i32) -> Game {
+	pub fn init<'g>(title: &'static str, width: i32, height: i32) -> Game<'g> {
 		//let mut render: Game;
 		let sdl_init = sdl2::init(sdl2::INIT_VIDEO).unwrap();
 		let window = Window::new(
@@ -24,10 +31,21 @@ impl Game {
 			height,
 			OPENGL).unwrap();
 		let renderer = Renderer::from_window(window, RenderDriverIndex::Auto, ACCELERATED).unwrap();
+		let sprite_path = Path::new("assets/rider.bmp");
+		println!("{:?}",sprite_path);
+		let tmp_sprite = Surface::from_bmp(&sprite_path).unwrap();
+		let texture = renderer.create_texture_from_surface(&tmp_sprite).unwrap();
+		//src/game/mod.rs:37:17: 37:25 error: `renderer` does not live long enough
+		//src/game/mod.rs:37              let texture = renderer.create_texture_from_surface(&tmp_sprite).unwrap();
+		//												^~~~~~~~
+		//src/game/mod.rs:23:76: 47:3 note: reference must be valid for the lifetime 'g as defined on the block at 23:75...
 		Game{
 			screen: renderer,
 			sdl_cntx: sdl_init,
-			running: true
+			running: true,
+			texture: Some(texture),
+			sourceRectangle: None,
+			destinationRectangle: None,
 		}
 	}
 
