@@ -39,8 +39,7 @@ impl <'gm>Game <'gm>{
 			sourceRectangle: None,
 			destinationRectangle: None,
 		};
-//alex@alex-Aspire-V3-771 ~/Desktop/rust/game/sdl_game/sdl2-rust-game $ cargo run
-//Compiling sdltest v0.0.1 (file:///home/alex/Desktop/rust/game/sdl_game/sdl2-rust-game)
+)
 //src/game/mod.rs:42:3: 42:7 error: `game` does not live long enough
 //src/game/mod.rs:42              game.load_image("assets/rider.bmp");
 //^~~~
