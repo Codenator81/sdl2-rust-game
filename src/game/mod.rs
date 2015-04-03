@@ -20,8 +20,8 @@ pub struct Game<'g> {
 
 impl <'gm>Game <'gm>{
 
-	pub fn init<'g>(title: &'static str, width: i32, height: i32) -> Game<'g> {
-		//let mut render: Game;
+	pub fn init(title: &'static str, width: i32, height: i32) -> Game {
+		let mut game: Game;
 		let sdl_init = sdl2::init(sdl2::INIT_VIDEO).unwrap();
 		let window = Window::new(
 			title,
@@ -31,26 +31,29 @@ impl <'gm>Game <'gm>{
 			height,
 			OPENGL).unwrap();
 		let renderer = Renderer::from_window(window, RenderDriverIndex::Auto, ACCELERATED).unwrap();
-		let sprite_path = Path::new("assets/rider.bmp");
-		println!("{:?}",sprite_path);
-		let tmp_sprite = Surface::from_bmp(&sprite_path).unwrap();
-		let texture = renderer.create_texture_from_surface(&tmp_sprite).unwrap();
-		//src/game/mod.rs:37:17: 37:25 error: `renderer` does not live long enough
-		//src/game/mod.rs:37              let texture = renderer.create_texture_from_surface(&tmp_sprite).unwrap();
-		//												^~~~~~~~
-		//src/game/mod.rs:23:76: 47:3 note: reference must be valid for the lifetime 'g as defined on the block at 23:75...
-		Game{
+		let game = Game{
 			screen: renderer,
 			sdl_cntx: sdl_init,
 			running: true,
-			texture: Some(texture),
+			texture: None,
 			sourceRectangle: None,
 			destinationRectangle: None,
-		}
+		};
+//alex@alex-Aspire-V3-771 ~/Desktop/rust/game/sdl_game/sdl2-rust-game $ cargo run
+//Compiling sdltest v0.0.1 (file:///home/alex/Desktop/rust/game/sdl_game/sdl2-rust-game)
+//src/game/mod.rs:42:3: 42:7 error: `game` does not live long enough
+//src/game/mod.rs:42              game.load_image("assets/rider.bmp");
+//^~~~
+//note: reference must be valid for the static lifetime...
+//src/game/mod.rs:41:4: 44:3 note: ...but borrowed value is only valid for the block suffix following statement 4 at 41:3
+
+		game.load_image("assets/rider.bmp");
+		game
 	}
 
-	pub fn start(&mut self) {
+	pub fn start(mut self) {
 		println!("initalizing sdl2 ...");
+
 		while self.running
 		{
 			//read keyboard event
@@ -82,5 +85,13 @@ impl <'gm>Game <'gm>{
 				_ => {self.running = true}
 			};
 		}
+	}
+
+	fn load_image(&'gm mut self, file_path: &'static str) {
+		let sprite_path = Path::new(file_path);
+		println!("{:?}",sprite_path);
+		let tmp_sprite = Surface::from_bmp(&sprite_path).unwrap();
+		let texture = self.screen.create_texture_from_surface(&tmp_sprite).unwrap();
+		self.texture = Some(texture);
 	}
 }
