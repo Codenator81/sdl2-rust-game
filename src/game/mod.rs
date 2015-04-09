@@ -8,6 +8,7 @@ use sdl2::rect::Rect;
 use sdl2::surface::Surface;
 
 use std::path::Path;
+use std::rc::Rc;
 
 pub struct Game<'g> {
 	screen: Renderer,
@@ -21,7 +22,6 @@ pub struct Game<'g> {
 impl <'gm>Game <'gm>{
 
 	pub fn init(title: &'static str, width: i32, height: i32) -> Game {
-		let mut game: Game;
 		let sdl_init = sdl2::init(sdl2::INIT_VIDEO).unwrap();
 		let window = Window::new(
 			title,
@@ -31,23 +31,17 @@ impl <'gm>Game <'gm>{
 			height,
 			OPENGL).unwrap();
 		let renderer = Renderer::from_window(window, RenderDriverIndex::Auto, ACCELERATED).unwrap();
-		let game = Game{
-			screen: renderer,
+		let (texture, render) = Game::load_image(&renderer, "assets/rider.bmp");
+		Game{
+			screen: *render,
 			sdl_cntx: sdl_init,
 			running: true,
 			texture: None,
 			sourceRectangle: None,
 			destinationRectangle: None,
-		};
-)
-//src/game/mod.rs:42:3: 42:7 error: `game` does not live long enough
-//src/game/mod.rs:42              game.load_image("assets/rider.bmp");
-//^~~~
-//note: reference must be valid for the static lifetime...
-//src/game/mod.rs:41:4: 44:3 note: ...but borrowed value is only valid for the block suffix following statement 4 at 41:3
-
-		game.load_image("assets/rider.bmp");
-		game
+		}
+		//g.load_image("assets/rider.bmp");
+		//game
 	}
 
 	pub fn start(mut self) {
@@ -86,11 +80,11 @@ impl <'gm>Game <'gm>{
 		}
 	}
 
-	fn load_image(&'gm mut self, file_path: &'static str) {
+	fn load_image<'a>(renderer: &'a Renderer, file_path: &'static str) -> (Texture<'gm>, &'a Renderer) {
 		let sprite_path = Path::new(file_path);
 		println!("{:?}",sprite_path);
 		let tmp_sprite = Surface::from_bmp(&sprite_path).unwrap();
-		let texture = self.screen.create_texture_from_surface(&tmp_sprite).unwrap();
-		self.texture = Some(texture);
+		let texture = renderer.create_texture_from_surface(&tmp_sprite).unwrap();
+		(texture, renderer)
 	}
 }
