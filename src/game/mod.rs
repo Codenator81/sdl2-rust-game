@@ -88,3 +88,10 @@ impl <'gm>Game <'gm>{
 		(texture, renderer)
 	}
 }
+//Compiling sdltest v0.0.1 (file:///home/alex/Desktop/rust/game/sdl_game/sdl2-rust-game)
+//src/game/mod.rs:87:26: 87:66 error: cannot infer an appropriate lifetime for autoref due to conflicting requirements
+//src/game/mod.rs:87              let texture = renderer.create_texture_from_surface(&tmp_sprite).unwrap();
+//^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//src/game/mod.rs:83:2: 89:3 help: consider using an explicit lifetime parameter as shown: fn load_image<'a>(renderer: &'a Renderer, file_path: &'static str)
+//-> (Texture<'a>, &'a Renderer)
+
