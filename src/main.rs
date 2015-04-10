@@ -1,10 +1,21 @@
 extern crate sdl2;
+extern crate sdl2_game_engine as sdl2_ge;
 
 pub mod game;
+
+use sdl2_ge::graphics;
+
+use sdl2::sdl;
 
 use game::Game;
 
 fn main() {
-	let mut g_game = Game::init("Chapter 1", 640, 580);
-	g_game.start();
+	println!("initalizing sdl2 ...");
+	let sdl_context = sdl::init(sdl::INIT_EVERYTHING).unwrap();
+	println!("initializing rendering context ...");
+	let renderer = graphics::Graphics::init_renderer("Rust Game", 640/* width */, 580/* height */);
+	println!("Init game");
+	let game = Game::new(&renderer, &sdl_context);
+	println!("Start game");
+	game.start();
 }

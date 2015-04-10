@@ -1,52 +1,30 @@
 use sdl2;
-use sdl2::video::{Window, WindowPos, OPENGL};
 use sdl2::pixels::Color;
-use sdl2::render::{RenderDriverIndex, ACCELERATED, Renderer, Texture};
+use sdl2::render::Renderer;
 use sdl2::sdl::Sdl;
 use sdl2::keycode::KeyCode;
-use sdl2::rect::Rect;
-use sdl2::surface::Surface;
 
-use std::path::Path;
-use std::rc::Rc;
+use sdl2_ge::graphics::Graphics;
 
-pub struct Game<'g> {
-	screen: Renderer,
-	sdl_cntx: Sdl,
-	running: bool,
-	texture: Option<Texture<'g>>,
-	sourceRectangle: Option<Rect>,
-	destinationRectangle: Option<Rect>,
+
+
+pub struct Game<'engine> {
+	context:     &'engine sdl2::Sdl,
+	display:     Graphics<'engine>,
+	running:	 bool
 }
 
-impl <'gm>Game <'gm>{
-
-	pub fn init(title: &'static str, width: i32, height: i32) -> Game {
-		let sdl_init = sdl2::init(sdl2::INIT_VIDEO).unwrap();
-		let window = Window::new(
-			title,
-			WindowPos::PosCentered,
-			WindowPos::PosCentered,
-			width,
-			height,
-			OPENGL).unwrap();
-		let renderer = Renderer::from_window(window, RenderDriverIndex::Auto, ACCELERATED).unwrap();
-		let (texture, render) = Game::load_image(&renderer, "assets/rider.bmp");
-		Game{
-			screen: *render,
-			sdl_cntx: sdl_init,
-			running: true,
-			texture: None,
-			sourceRectangle: None,
-			destinationRectangle: None,
+impl <'g>Game <'g>{
+	pub fn new(renderer: &'g Renderer, context: &'g sdl2::Sdl) -> Game<'g> {
+		let display  = Graphics::new(renderer);
+		Game {
+			display: display,
+			context: context,
+			running: true
 		}
-		//g.load_image("assets/rider.bmp");
-		//game
 	}
 
 	pub fn start(mut self) {
-		println!("initalizing sdl2 ...");
-
 		while self.running
 		{
 			//read keyboard event
@@ -59,14 +37,14 @@ impl <'gm>Game <'gm>{
 
 
 	fn render(&self) {
-		let mut drawer = self.screen.drawer();
+		let mut drawer = self.display.screen.drawer();
 		drawer.set_draw_color(Color::RGBA( 0, 0, 0, 255));
 		drawer.clear();
 		drawer.present();
 	}
 	//for now handle close button or Esc key
 	fn handle_events(&mut self){
-		let mut	event_pump = self.sdl_cntx.event_pump();
+		let mut	event_pump = self.context.event_pump();
 		for event in event_pump.poll_iter()  {
 			use sdl2::event::Event;
 
@@ -79,19 +57,5 @@ impl <'gm>Game <'gm>{
 			};
 		}
 	}
-
-	fn load_image<'a>(renderer: &'a Renderer, file_path: &'static str) -> (Texture<'gm>, &'a Renderer) {
-		let sprite_path = Path::new(file_path);
-		println!("{:?}",sprite_path);
-		let tmp_sprite = Surface::from_bmp(&sprite_path).unwrap();
-		let texture = renderer.create_texture_from_surface(&tmp_sprite).unwrap();
-		(texture, renderer)
-	}
 }
-//Compiling sdltest v0.0.1 (file:///home/alex/Desktop/rust/game/sdl_game/sdl2-rust-game)
-//src/game/mod.rs:87:26: 87:66 error: cannot infer an appropriate lifetime for autoref due to conflicting requirements
-//src/game/mod.rs:87              let texture = renderer.create_texture_from_surface(&tmp_sprite).unwrap();
-//^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//src/game/mod.rs:83:2: 89:3 help: consider using an explicit lifetime parameter as shown: fn load_image<'a>(renderer: &'a Renderer, file_path: &'static str)
-//-> (Texture<'a>, &'a Renderer)
 
