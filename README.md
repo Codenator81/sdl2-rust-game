@@ -1,6 +1,6 @@
-# sdl2-rust-game
 [![Build Status](https://travis-ci.org/Codenator81/sdl2-rust-game.png?branch=master)](https://travis-ci.org/Codenator81/sdl2-rust-game)
 <br>
+# sdl2-rust-game
 <h3>Create game on SDL2 with Rust lang</h3>
 
 This is travel through book SDL Game Development.<br>
