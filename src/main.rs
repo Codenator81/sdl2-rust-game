@@ -13,9 +13,9 @@ fn main() {
 	println!("initalizing sdl2 ...");
 	let sdl_context = sdl::init(sdl::INIT_EVERYTHING).unwrap();
 	println!("initializing rendering context ...");
-	let renderer = graphics::Graphics::init_renderer("Rust Game", 640/* width */, 580/* height */);
+	let renderer = graphics::Graphics::init_renderer(&sdl_context,"Rust Game", 640, 580);
 	println!("Init game");
-	let game = Game::new(&renderer, &sdl_context);
+	let game = Game::new(renderer, &sdl_context);
 	println!("Start game");
 	game.start();
 }

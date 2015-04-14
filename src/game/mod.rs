@@ -15,7 +15,7 @@ pub struct Game<'engine> {
 }
 
 impl <'g>Game <'g>{
-	pub fn new(renderer: &'g Renderer, context: &'g sdl2::Sdl) -> Game<'g> {
+	pub fn new(renderer: Renderer<'g>, context: &'g sdl2::Sdl) -> Game<'g> {
 		let display  = Graphics::new(renderer);
 		Game {
 			display: display,
@@ -36,7 +36,7 @@ impl <'g>Game <'g>{
 	}
 
 
-	fn render(&self) {
+	fn render(&mut self) {
 		let mut drawer = self.display.screen.drawer();
 		drawer.set_draw_color(Color::RGBA( 0, 0, 0, 255));
 		drawer.clear();
