@@ -1,8 +1,11 @@
 # sdl2-rust-game
 <h3>Create game on SDL2 with Rust lang</h3>
 
-This is travel through book SDL Game Development.
+This is travel through book SDL Game Development.<br>
+This project uses [rust-sdl2](https://github.com/AngryLawyer/rust-sdl2) which binds to SDL2.<br>
 
+[![Build Status](https://travis-ci.org/Codenator81/sdl2-rust-game.png?branch=master)](https://travis-ci.org/Codenator81/sdl2-rust-game)
+<br>
 Project started on Windows 8.1
 Currently develop on OSX&Mint
 
