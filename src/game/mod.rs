@@ -10,11 +10,11 @@ use sdl2_ge::graphics::Graphics;
 
 
 pub struct Game<'engine> {
-	context:     &'engine sdl2::Sdl,
-	display:     Graphics<'engine>,
-	running:	 bool,
-	sourceRect: Option<Rect>,
-	destRect: Option<Rect>,
+	context:     	&'engine sdl2::Sdl,
+	display:     	Graphics<'engine>,
+	running:	 	bool,
+	sourceRect: 	Option<Rect>,
+	destRect: 		Option<Rect>,
 }
 
 impl <'g>Game <'g>{
@@ -52,7 +52,7 @@ impl <'g>Game <'g>{
 		let mut drawer = self.display.screen.drawer();
 		drawer.set_draw_color(Color::RGBA( 0, 0, 0, 255));
 		drawer.clear();
-		drawer.copy(&self.display.texture["assets/rider.bmp"], self.sourceRect, self.destRect);
+		drawer.copy(&self.display.texture["assets/rider.bmp"], None, None);
 		drawer.present();
 	}
 	//for now handle close button or Esc key

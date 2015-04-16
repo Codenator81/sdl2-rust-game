@@ -8,8 +8,8 @@ use std::collections::hash_map::{HashMap, Entry};
 use std::path::Path;
 
 pub struct Graphics<'g> {
-	pub texture:  HashMap<String, Texture>,
-	pub screen: Renderer<'g>,
+	pub texture:  	HashMap<String, Texture>,
+	pub screen: 	Renderer<'g>,
 }
 
 impl<'g> Graphics<'g> {
