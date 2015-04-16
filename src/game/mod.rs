@@ -24,13 +24,14 @@ impl <'g>Game <'g>{
 		//query for size of texture
 		let txt_query = display.texture["assets/rider.bmp"].query();
 		//give coords according query from texture
-		let rect = Some(Rect::new(0, 0, tmp_query.width, tmp_query.height));
+		let sourceRect = Some(Rect::new(0, 0, 50, 50));
+		let destRect = Some(Rect::new(0, 0, txt_query.width, txt_query.height));
 		Game {
 			display: display,
 			context: context,
 			running: true,
-			sourceRect: rect,
-			destRect: rect,
+			sourceRect: sourceRect,
+			destRect: destRect,
 		}
 
 	}
