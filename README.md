@@ -7,11 +7,11 @@ This is travel through book SDL Game Development.<br>
 This project uses [rust-sdl2](https://github.com/AngryLawyer/rust-sdl2) which binds to SDL2.<br>
 
 Project started on Windows 8.1
-Currently develop on OSX&Mint
+Currently develop on OSX&Linux Mint
 
 <br>
 <hr>
-Contributor:
+Developer:
 Aleksandr Poltarjonok aka Codenator81
 
 <br>

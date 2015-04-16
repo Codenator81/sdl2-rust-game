@@ -12,17 +12,25 @@ use sdl2_ge::graphics::Graphics;
 pub struct Game<'engine> {
 	context:     &'engine sdl2::Sdl,
 	display:     Graphics<'engine>,
-	running:	 bool
+	running:	 bool,
+	sourceRect: Option<Rect>,
+	destRect: Option<Rect>,
 }
 
 impl <'g>Game <'g>{
 	pub fn new(renderer: Renderer<'g>, context: &'g sdl2::Sdl) -> Game<'g> {
 		let mut display  = Graphics::new(renderer);
 		display.load_image(format!("assets/rider.bmp"));
+		//query for size of texture
+		let txt_query = display.texture["assets/rider.bmp"].query();
+		//give coords according query from texture
+		let rect = Some(Rect::new(0, 0, tmp_query.width, tmp_query.height));
 		Game {
 			display: display,
 			context: context,
-			running: true
+			running: true,
+			sourceRect: rect,
+			destRect: rect,
 		}
 
 	}
@@ -43,7 +51,7 @@ impl <'g>Game <'g>{
 		let mut drawer = self.display.screen.drawer();
 		drawer.set_draw_color(Color::RGBA( 0, 0, 0, 255));
 		drawer.clear();
-		drawer.copy(&self.display.texture["assets/rider.bmp"], None, Some(Rect::new(100, 100, 256, 256)));
+		drawer.copy(&self.display.texture["assets/rider.bmp"], self.sourceRect, self.destRect);
 		drawer.present();
 	}
 	//for now handle close button or Esc key
