@@ -2,11 +2,13 @@ use sdl2;
 use sdl2::video::{Window, WindowPos, OPENGL};
 use sdl2::render::{RenderDriverIndex, ACCELERATED, Renderer, Texture};
 use sdl2::mouse;
+use sdl2::surface::Surface;
 
-use std::collections::hash_map::{HashMap};
+use std::collections::hash_map::{HashMap, Entry};
+use std::path::Path;
 
 pub struct Graphics<'g> {
-	texture:  HashMap<String, Texture>,
+	pub texture:  HashMap<String, Texture>,
 	pub screen: Renderer<'g>,
 }
 
@@ -32,30 +34,24 @@ impl<'g> Graphics<'g> {
 		mouse::show_cursor(true);
 		return graphics;
 	}
+
+	pub fn load_image(&mut self, file_path: String) {
+		// Load sprite
+		let sprite_path = Path::new(&file_path[..]);
+		let sprite_window = Surface::from_bmp(&sprite_path);
+		// Store sprite
+		let sprite_surface = match sprite_window {
+			Ok(surface) => surface,
+			Err(msg) => panic!("sprite could not be loaded to a surface: {}", msg),
+		};
+		match self.texture.entry(file_path.clone()) {
+			Entry::Vacant(entry) => {
+				match self.screen.create_texture_from_surface(&sprite_surface) {
+					Ok(texture) => { entry.insert(texture); },
+					Err(msg) => panic!("sprite could not be rendered: {}", msg)
+				}
+			},
+			_ => {},
+		};
+	}
 }
-
-
-//let texture = Game::load_image(&renderer, "assets/rider.bmp");
-//game.load_image("assets/rider.bmp");
-
-//	pub fn init(&'gm mut self) -> Game{
-//		let texture = Game::load_image(&self.screen, "assets/rider.bmp");
-//		self.texture = Some(texture);
-//		*self
-//	}
-//fn load_image<'a: 'gm>(screen: &'a Renderer, file_path: &'static str) -> Texture<'a>{
-//				let sprite_path = Path::new(file_path);
-//				let texture = Surface::from_bmp(&sprite_path).and_then(|surface| {
-//							screen.create_texture_from_surface(&surface).and_then(|texture| {
-//
-//				Ok(texture)
-//				})
-//			}).unwrap();
-//		texture
-//
-////		let sprite_path = Path::new(file_path);
-////		println!("{:?}",sprite_path);
-////		let tmp_sprite = Surface::from_bmp(&sprite_path).unwrap();
-////		renderer.create_texture_from_surface(&tmp_sprite)
-////		(texture, renderer)
-//	}

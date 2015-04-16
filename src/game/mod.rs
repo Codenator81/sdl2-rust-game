@@ -3,6 +3,7 @@ use sdl2::pixels::Color;
 use sdl2::render::Renderer;
 use sdl2::sdl::Sdl;
 use sdl2::keycode::KeyCode;
+use sdl2::rect::Rect;
 
 use sdl2_ge::graphics::Graphics;
 
@@ -16,12 +17,14 @@ pub struct Game<'engine> {
 
 impl <'g>Game <'g>{
 	pub fn new(renderer: Renderer<'g>, context: &'g sdl2::Sdl) -> Game<'g> {
-		let display  = Graphics::new(renderer);
+		let mut display  = Graphics::new(renderer);
+		display.load_image(format!("assets/rider.bmp"));
 		Game {
 			display: display,
 			context: context,
 			running: true
 		}
+
 	}
 
 	pub fn start(mut self) {
@@ -40,6 +43,7 @@ impl <'g>Game <'g>{
 		let mut drawer = self.display.screen.drawer();
 		drawer.set_draw_color(Color::RGBA( 0, 0, 0, 255));
 		drawer.clear();
+		drawer.copy(&self.display.texture["assets/rider.bmp"], None, Some(Rect::new(100, 100, 256, 256)));
 		drawer.present();
 	}
 	//for now handle close button or Esc key
