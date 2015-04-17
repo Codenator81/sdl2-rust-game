@@ -1,8 +1,20 @@
 language: rust
-before_install:
-  - yes | sudo add-apt-repository ppa:zoogie/sdl2-snapshots
-  - sudo apt-get -qq update
-  - sudo apt-get -qq install libsdl2-dev
+rust:
+    - 1.0.0-beta.2
+os:
+    - linux
+
+install:
+  - cd ..
+  - time wget -q http://www.libsdl.org/release/SDL2-2.0.3.tar.gz
+  - time wget -q http://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.0.0.tar.gz
+  - time tar xf SDL2-*.tar.gz
+  - time tar xf SDL2_image-*.tar.gz
+  - cd SDL2-*
+  - ./configure && make && sudo make install
+  - cd -
+  - cd SDL2_image-*
+  - ./configure && make && sudo make install
+  - cd -
 script:
   - cargo build --verbose
-  - cargo test --verbose
