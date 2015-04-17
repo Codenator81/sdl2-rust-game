@@ -4,6 +4,8 @@ use sdl2::render::{RenderDriverIndex, ACCELERATED, Renderer, Texture};
 use sdl2::mouse;
 use sdl2::surface::Surface;
 
+use sdl2_image::{self, LoadTexture};
+
 use std::collections::hash_map::{HashMap, Entry};
 use std::path::Path;
 
@@ -38,15 +40,10 @@ impl<'g> Graphics<'g> {
 	pub fn load_image(&mut self, file_path: String) {
 		// Load sprite
 		let sprite_path = Path::new(&file_path[..]);
-		let sprite_window = Surface::from_bmp(&sprite_path);
-		// Store sprite
-		let sprite_surface = match sprite_window {
-			Ok(surface) => surface,
-			Err(msg) => panic!("sprite could not be loaded to a surface: {}", msg),
-		};
 		match self.texture.entry(file_path.clone()) {
 			Entry::Vacant(entry) => {
-				match self.screen.create_texture_from_surface(&sprite_surface) {
+				// using sdl2_image lib. It is now in renderer becouse we init it
+				match self.screen.load_texture(&sprite_path) {
 					Ok(texture) => { entry.insert(texture); },
 					Err(msg) => panic!("sprite could not be rendered: {}", msg)
 				}

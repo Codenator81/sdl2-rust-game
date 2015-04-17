@@ -5,6 +5,8 @@ use sdl2::sdl::Sdl;
 use sdl2::keycode::KeyCode;
 use sdl2::rect::Rect;
 
+use sdl2_image;
+
 use sdl2_ge::graphics::Graphics;
 
 pub struct Game<'engine> {
@@ -21,14 +23,14 @@ impl <'g>Game <'g>{
 		display.load_image(format!("assets/animate.bmp"));
 		//query for size of texture
 		//give coords according query from texture
-		let sourceRect = Some(Rect::new(0, 0, 128, 82));
-		let destRect = Some(Rect::new(0, 0, 128, 82));
+		let source_rect = Some(Rect::new(0, 0, 128, 82));
+		let dest_rect = Some(Rect::new(0, 0, 128, 82));
 		Game {
 			display: display,
 			context: context,
 			running: true,
-			sourceRect: sourceRect,
-			destRect: destRect,
+			sourceRect: source_rect,
+			destRect: dest_rect,
 		}
 
 	}
@@ -71,6 +73,10 @@ impl <'g>Game <'g>{
 				_ => {self.running = true}
 			};
 		}
+	}
+
+	pub fn quit() {
+		sdl2_image::quit();
 	}
 }
 
