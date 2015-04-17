@@ -45,11 +45,9 @@ impl <'g>Game <'g>{
 	}
 
 	fn update(&mut self) {
-		if let Some(ref mut rect) = self.sourceRect {
-			// Every time we want to move another frame, we simply move the location of
-			// the source rectangle
-			rect.x = 128 * ((sdl2::sdl::get_ticks() / 100) % 6) as i32;
-		}
+		// Every time we want to move another frame, we simply move the location of
+		// the source rectangle
+		self.sourceRect.as_mut().map(|rect| rect.x = 128 * ((sdl2::sdl::get_ticks() / 100) % 6) as i32);
 	}
 
 	fn render(&mut self) {
