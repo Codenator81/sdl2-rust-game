@@ -5,7 +5,6 @@ os:
     - linux
 
 install:
-  - cd ..
   - time wget -q http://www.libsdl.org/release/SDL2-2.0.3.tar.gz
   - time wget -q http://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.0.0.tar.gz
   - time tar xf SDL2-*.tar.gz
@@ -17,4 +16,4 @@ install:
   - ./configure && make && sudo make install
   - cd -
 script:
-  - cargo build --verbose
+  - cargo build -v
