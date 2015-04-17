@@ -16,4 +16,5 @@ install:
   - ./configure && make && sudo make install
   - cd -
 script:
+  - cd sdl2-rust-game
   - cargo build -v
