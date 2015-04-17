@@ -7,8 +7,6 @@ use sdl2::rect::Rect;
 
 use sdl2_ge::graphics::Graphics;
 
-
-
 pub struct Game<'engine> {
 	context:     	&'engine sdl2::Sdl,
 	display:     	Graphics<'engine>,
@@ -20,12 +18,11 @@ pub struct Game<'engine> {
 impl <'g>Game <'g>{
 	pub fn new(renderer: Renderer<'g>, context: &'g sdl2::Sdl) -> Game<'g> {
 		let mut display  = Graphics::new(renderer);
-		display.load_image(format!("assets/rider.bmp"));
+		display.load_image(format!("assets/animate.bmp"));
 		//query for size of texture
-		let txt_query = display.texture["assets/rider.bmp"].query();
 		//give coords according query from texture
-		let sourceRect = Some(Rect::new(50, 50, 50, 50));
-		let destRect = Some(Rect::new(100, 100, txt_query.width, txt_query.height));
+		let sourceRect = Some(Rect::new(0, 0, 128, 82));
+		let destRect = Some(Rect::new(0, 0, 128, 82));
 		Game {
 			display: display,
 			context: context,
@@ -42,17 +39,24 @@ impl <'g>Game <'g>{
 			//read keyboard event
 			//handleEvent return true or false and stop loop
 			self.handle_events();
-			//self.update();
+			self.update();
 			self.render();
 		}
 	}
 
+	fn update(&mut self) {
+		if let Some(ref mut rect) = self.sourceRect {
+			// Every time we want to move another frame, we simply move the location of
+			// the source rectangle
+			rect.x = 128 * ((sdl2::sdl::get_ticks() / 100) % 6) as i32;
+		}
+	}
 
 	fn render(&mut self) {
 		let mut drawer = self.display.screen.drawer();
 		drawer.set_draw_color(Color::RGBA( 0, 0, 0, 255));
 		drawer.clear();
-		drawer.copy(&self.display.texture["assets/rider.bmp"], None, None);
+		drawer.copy(&self.display.texture["assets/animate.bmp"], self.sourceRect, self.destRect);
 		drawer.present();
 	}
 	//for now handle close button or Esc key
