@@ -1,17 +1,12 @@
 use sdl2;
 use sdl2::pixels::Color;
-use sdl2::render::Renderer;
-use sdl2::sdl::Sdl;
 use sdl2::keycode::KeyCode;
 use sdl2::rect::Rect;
-
-use sdl2_image;
 
 use sdl2_ge::graphics::Graphics;
 use sdl2_ge::texturemanager as t_manager;
 
 pub struct Game<'engine> {
-	context:     	&'engine sdl2::Sdl,
 	display:     	Graphics<'engine>,
 	running:	 	bool,
 	tm:				t_manager::TextureManager,
@@ -20,8 +15,7 @@ pub struct Game<'engine> {
 }
 
 impl <'g>Game <'g>{
-	pub fn new(renderer: Renderer<'g>, context: &'g sdl2::Sdl) -> Game<'g> {
-		let mut display  = Graphics::new(renderer);
+	pub fn new(display: Graphics<'g>) -> Game<'g> {
 		let tm = t_manager::load("assets/animate-alpha.png".to_string(),
 			"animate".to_string(),
 			&display
@@ -32,7 +26,6 @@ impl <'g>Game <'g>{
 		let dest_rect = Some(Rect::new(0, 0, 128, 82));
 		Game {
 			display: display,
-			context: context,
 			running: true,
 			tm: tm,
 			source_rect: source_rect,
@@ -66,7 +59,7 @@ impl <'g>Game <'g>{
 	}
 	//for now handle close button or Esc key
 	fn handle_events(&mut self){
-		let mut	event_pump = self.context.event_pump();
+		let mut	event_pump = self.display.context.event_pump();
 		for event in event_pump.poll_iter()  {
 			use sdl2::event::Event;
 
@@ -78,10 +71,6 @@ impl <'g>Game <'g>{
 				_ => {self.running = true}
 			};
 		}
-	}
-
-	pub fn quit() {
-		sdl2_image::quit();
 	}
 }
 
