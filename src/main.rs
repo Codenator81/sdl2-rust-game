@@ -8,7 +8,7 @@ use sdl2_ge::graphics;
 
 use sdl2::sdl;
 
-use sdl2_image::{LoadTexture, INIT_PNG, INIT_JPG};
+use sdl2_image::{INIT_PNG, INIT_JPG};
 
 use game::Game;
 
