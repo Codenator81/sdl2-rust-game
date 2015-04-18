@@ -8,11 +8,13 @@ use sdl2::rect::Rect;
 use sdl2_image;
 
 use sdl2_ge::graphics::Graphics;
+use sdl2_ge::texturemanager as t_manager;
 
 pub struct Game<'engine> {
 	context:     	&'engine sdl2::Sdl,
 	display:     	Graphics<'engine>,
 	running:	 	bool,
+	tm:				t_manager::TextureManager,
 	source_rect: 	Option<Rect>,
 	dest_rect: 		Option<Rect>,
 }
@@ -20,7 +22,10 @@ pub struct Game<'engine> {
 impl <'g>Game <'g>{
 	pub fn new(renderer: Renderer<'g>, context: &'g sdl2::Sdl) -> Game<'g> {
 		let mut display  = Graphics::new(renderer);
-		display.load_image(format!("assets/animate-alpha.png"));
+		let tm = t_manager::load("assets/animate-alpha.png".to_string(),
+			"animate".to_string(),
+			&display
+		);
 		//query for size of texture
 		//give coords according query from texture
 		let source_rect = Some(Rect::new(0, 0, 128, 82));
@@ -29,6 +34,7 @@ impl <'g>Game <'g>{
 			display: display,
 			context: context,
 			running: true,
+			tm: tm,
 			source_rect: source_rect,
 			dest_rect: dest_rect,
 		}
@@ -55,7 +61,7 @@ impl <'g>Game <'g>{
 		let mut drawer = self.display.screen.drawer();
 		drawer.set_draw_color(Color::RGBA( 255, 0, 0, 255));
 		drawer.clear();
-		drawer.copy(&self.display.texture["assets/animate-alpha.png"], self.source_rect, self.dest_rect);
+		drawer.copy(&self.tm.texture_map["animate"], self.source_rect, self.dest_rect);
 		drawer.present();
 	}
 	//for now handle close button or Esc key

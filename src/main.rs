@@ -13,6 +13,7 @@ use sdl2_image::{INIT_PNG, INIT_JPG};
 use game::Game;
 
 fn main() {
+	//TODO muve max staff to game engine
 	println!("initalizing sdl2 ...");
 	let sdl_context = sdl::init(sdl::INIT_EVERYTHING).unwrap();
 	sdl2_image::init(INIT_PNG | INIT_JPG);
