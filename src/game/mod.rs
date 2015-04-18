@@ -15,24 +15,6 @@ pub struct Game<'engine> {
 }
 
 impl <'g>Game <'g>{
-	pub fn new(display: Graphics<'g>) -> Game<'g> {
-		let tm = t_manager::load("assets/animate-alpha.png".to_string(),
-			"animate".to_string(),
-			&display
-		);
-		//query for size of texture
-		//give coords according query from texture
-		let source_rect = Some(Rect::new(0, 0, 128, 82));
-		let dest_rect = Some(Rect::new(0, 0, 128, 82));
-		Game {
-			display: display,
-			running: true,
-			tm: tm,
-			source_rect: source_rect,
-			dest_rect: dest_rect,
-		}
-	}
-
 	pub fn start(mut self) {
 		while self.running
 		{
@@ -74,3 +56,20 @@ impl <'g>Game <'g>{
 	}
 }
 
+pub fn new(display: Graphics) -> Game {
+	let tm = t_manager::load("assets/animate-alpha.png".to_string(),
+			"animate".to_string(),
+		&display
+		);
+	//query for size of texture
+	//give coords according query from texture
+	let source_rect = Some(Rect::new(0, 0, 128, 82));
+	let dest_rect = Some(Rect::new(0, 0, 128, 82));
+	Game {
+	display: display,
+	running: true,
+	tm: tm,
+	source_rect: source_rect,
+	dest_rect: dest_rect,
+	}
+}

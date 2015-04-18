@@ -17,25 +17,27 @@ pub struct Graphics<'g> {
 }
 
 impl<'g> Graphics<'g> {
-	pub fn init_renderer(title: &'static str, width: i32, height: i32) -> Graphics<'g> {
-		println!("initalizing sdl2 ...");
-		let sdl_context = sdl::init(sdl::INIT_EVERYTHING).unwrap();
-		sdl2_image::init(INIT_PNG | INIT_JPG);
-		println!("initializing rendering context ...");
-		let window = Window::new(
-				&sdl_context,
-				title,
-				WindowPos::PosCentered,
-				WindowPos::PosCentered,
-				width,
-				height,
-				OPENGL).unwrap();
-		let renderer = Renderer::from_window(window, RenderDriverIndex::Auto, ACCELERATED).unwrap();
-		mouse::show_cursor(true);
-		Graphics {
-			screen: renderer,
-			context: sdl_context,
-		}
+
+}
+
+pub fn init_renderer(title: &'static str, width: i32, height: i32) -> Graphics {
+	println!("initalizing sdl2 ...");
+	let sdl_context = sdl::init(sdl::INIT_EVERYTHING).unwrap();
+	sdl2_image::init(INIT_PNG | INIT_JPG);
+	println!("initializing rendering context ...");
+	let window = Window::new(
+			&sdl_context,
+			title,
+			WindowPos::PosCentered,
+			WindowPos::PosCentered,
+			width,
+			height,
+			OPENGL).unwrap();
+	let renderer = Renderer::from_window(window, RenderDriverIndex::Auto, ACCELERATED).unwrap();
+	mouse::show_cursor(true);
+	Graphics {
+	screen: renderer,
+	context: sdl_context,
 	}
 }
 
