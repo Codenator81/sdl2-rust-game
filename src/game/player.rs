@@ -1,7 +1,6 @@
 use sdl2;
 use sdl2::render::{RenderDrawer};
 
-use sdl2_ge::gameobject;
 use sdl2_ge::gameobject::{GameObj, GameObject};
 use sdl2_ge::texturemanager::TextureManager;
 

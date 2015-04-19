@@ -2,7 +2,6 @@ pub mod player;
 
 use game::player::Player;
 
-use sdl2;
 use sdl2::timer;
 use sdl2::pixels::Color;
 use sdl2::keycode::KeyCode;
@@ -16,8 +15,6 @@ static DELAY_TIME: u32 = 1000 / 60 as u32;
 pub struct Game<'engine> {
 	display:     	Graphics<'engine>,
 	running:	 	bool,
-	//tm:				t_manager::TextureManager,
-	//current_frame:	i32,
 	go: 			GameObject,
 	player:			Player,
 }
@@ -36,8 +33,6 @@ pub fn new(display: Graphics) -> Game {
 	Game {
 		display: display,
 		running: true,
-		//tm: tm,
-		//current_frame: 0,
 		go: go,
 		player: player,
 	}
@@ -51,10 +46,10 @@ impl <'g>Game <'g>{
 		{
 			frame_start = timer::get_ticks();
 			//read keyboard event
-			//handleEvent return true or false and stop loop
 			self.handle_events();
 			self.update();
 			self.render();
+			// same delay for slow down frame rate
 			frame_time = timer::get_ticks() - frame_start;
 			if frame_time < DELAY_TIME {
 					timer::delay((DELAY_TIME - frame_time) as u32);
@@ -65,7 +60,6 @@ impl <'g>Game <'g>{
 	fn update(&mut self) {
 		// Every time we want to move another frame, we simply move the location of
 		// the source rectangle
-		//self.current_frame = ((sdl2::sdl::get_ticks() / 100) % 6) as i32;
 		self.go.update();
 		self.player.update();
 	}
