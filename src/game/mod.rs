@@ -1,3 +1,5 @@
+pub mod player;
+
 use sdl2;
 use sdl2::pixels::Color;
 use sdl2::keycode::KeyCode;
@@ -32,10 +34,11 @@ impl <'g>Game <'g>{
 
 	fn render(&mut self) {
 		let mut drawer = self.display.screen.drawer();
-		drawer.set_draw_color(Color::RGBA( 255, 0, 0, 255));
+		drawer.set_draw_color(Color::RGBA( 100, 20, 10, 255));
 		drawer.clear();
-		self.tm.draw("animate".to_string(), 0,0, 128, 82, &mut drawer, false);
-		self.tm.draw_frame("animate".to_string(), 100,100, 128, 82,
+		self.tm.draw("animate".to_string(), 100,0, 128, 82,
+			&mut drawer, false);
+		self.tm.draw_frame("animate".to_string(), 0,0, 128, 82,
 			1, self.current_frame ,&mut drawer, false);
 		drawer.present();
 	}
