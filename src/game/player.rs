@@ -18,11 +18,23 @@ impl Player {
 
 impl GameObj for Player{
 	fn draw(&self, drawer: &mut RenderDrawer, flip: bool) {
-		self.g_obj.draw(drawer, flip);
+		self.g_obj.draw(drawer, self.g_obj.direction);
 	}
 
 	fn update(&mut self) {
 		self.g_obj.current_frame = ((sdl2::sdl::get_ticks() / 100) % 6) as i32;
-		self.g_obj.x -= 1;
+		if (self.g_obj.direction == true) {
+			if (self.g_obj.x > 10) {
+				self.g_obj.x -= 3;
+			} else {
+				self.g_obj.direction = false;
+			}
+		} else {
+			if (self.g_obj.x < 510) {
+				self.g_obj.x += 3;
+			} else {
+				self.g_obj.direction = true;
+			}
+		}
 	}
 }
